@@ -40,3 +40,33 @@ const MobileNav = () => {
 }
 
 export default MobileNav
+
+
+// MobileNav.tsx
+
+// 'use client';
+
+// import React from 'react';
+// import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
+// import { AlignRight } from 'lucide-react';
+// import NavItems from './NavItems';
+
+// interface MobileNavProps {
+//   userRole: string;
+// }
+
+// const MobileNav: React.FC<MobileNavProps> = ({ userRole }) => {
+//   return (
+//     <Sheet>
+//       <SheetTrigger>
+//         <AlignRight size={32} className="cursor-pointer" />
+//       </SheetTrigger>
+
+//       <SheetContent className="flex flex-col gap-6 bg-white md:hidden">
+//         <NavItems userRole={userRole} />
+//       </SheetContent>
+//     </Sheet>
+//   );
+// };
+
+// export default MobileNav;

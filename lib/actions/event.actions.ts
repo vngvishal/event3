@@ -170,4 +170,5 @@ export async function getRelatedEventsByCategory({
   } catch (error) {
     handleError(error)
   }
+  
 }
