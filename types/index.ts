@@ -1,3 +1,15 @@
+import { Types } from 'mongoose'
+
+export interface IUser {
+  clerkId: string
+  email: string
+  username: string
+  firstName: string
+  lastName: string
+  photo?: string
+  orders?: string[]
+  events?: string[]
+}
 // ====== USER PARAMS
 export type CreateUserParams = {
   clerkId: string
@@ -11,7 +23,7 @@ export type CreateUserParams = {
 export type UpdateUserParams = {
   firstName: string
   lastName: string
-  username: string
+  username?: string
   photo: string
 }
 

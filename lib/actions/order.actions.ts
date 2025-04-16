@@ -62,58 +62,6 @@ export const createOrder = async (order: CreateOrderParams) => {
 
 // GET ORDERS BY EVENT
 export async function getOrdersByEvent({ searchString, eventId }: GetOrdersByEventParams) {
-  // try {
-  //   await connectToDatabase()
-
-  //   if (!eventId) throw new Error('Event ID is required')
-  //   const eventObjectId = new ObjectId(eventId)
-
-  //   const orders = await Order.aggregate([
-  //     {
-  //       $lookup: {
-  //         from: 'users',
-  //         localField: 'buyer',
-  //         foreignField: '_id',
-  //         as: 'buyer',
-  //       },
-  //     },
-  //     {
-  //       $unwind: '$buyer',
-  //     },
-  //     {
-  //       $lookup: {
-  //         from: 'events',
-  //         localField: 'event',
-  //         foreignField: '_id',
-  //         as: 'event',
-  //       },
-  //     },
-  //     {
-  //       $unwind: '$event',
-  //     },
-  //     {
-  //       $project: {
-  //         _id: 1,
-  //         totalAmount: 1,
-  //         createdAt: 1,
-  //         eventTitle: '$event.title',
-  //         eventId: '$event._id',
-  //         buyer: {
-  //           $concat: ['$buyer.firstName', ' ', '$buyer.lastName'],
-  //         },
-  //       },
-  //     },
-  //     {
-  //       $match: {
-  //         $and: [{ eventId: eventObjectId }, { buyer: { $regex: RegExp(searchString, 'i') } }],
-  //       },
-  //     },
-  //   ])
-
-  //   return JSON.parse(JSON.stringify(orders))
-  // } catch (error) {
-  //   handleError(error)
-  // }
 
   try {
     await connectToDatabase();
