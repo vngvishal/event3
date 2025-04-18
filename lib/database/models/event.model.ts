@@ -90,8 +90,8 @@ export interface IEvent extends Document {
   price: string;
   isFree: boolean;
   url?: string;
-  category: Types.ObjectId;  
-  organizer: Types.ObjectId;
+  category: { _id: string, name: string }
+    organizer: { _id: string, firstName: string, lastName: string }
 }
 
 const EventSchema = new Schema<IEvent>({
