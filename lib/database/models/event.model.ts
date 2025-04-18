@@ -79,6 +79,7 @@
 import { Schema, model, models, Document, Types } from 'mongoose';
 
 export interface IEvent extends Document {
+  _id: string;
   title: string;
   description?: string;
   location?: string;
