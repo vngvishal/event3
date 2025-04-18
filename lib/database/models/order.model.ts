@@ -57,7 +57,7 @@ import { Schema, model, models, Document } from 'mongoose';
 export interface IOrder extends Document {
   createdAt: Date;
   stripeId: string;
-  totalAmount: string;
+  totalAmount: string;//string
   event: {
     _id: string;
     title: string;
@@ -69,7 +69,14 @@ export interface IOrder extends Document {
   };
 }
 
-
+export type IOrderItem = {
+  _id: string
+  totalAmount: string
+  createdAt: Date
+  eventTitle: string
+  eventId: string
+  buyer: string
+}
 
 const OrderSchema = new Schema(
   {

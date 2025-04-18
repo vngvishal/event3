@@ -132,7 +132,7 @@ export type CreateOrderParams = {
   stripeId: string
   eventId: string
   buyerId: string
-  totalAmount: string
+  totalAmount: string// changed from string
   createdAt: Date
 }
 
