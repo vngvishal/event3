@@ -75,7 +75,7 @@
 
 // export default Event;
 
-
+import '@/lib/database/models/user.model';
 import { Schema, model, models, Document, Types } from 'mongoose';
 
 export interface IEvent extends Document {

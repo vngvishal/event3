@@ -120,7 +120,12 @@
 // }
 
 
+import { connectToDatabase } from '@/lib/database';
+import Order from '@/lib/database/models/order.model';
 
+
+import '@/lib/database/models/event.model';
+import '@/lib/database/models/user.model';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import QRCode from 'qrcode';
 

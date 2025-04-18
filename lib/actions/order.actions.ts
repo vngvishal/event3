@@ -1,5 +1,6 @@
 "use server"
 import '@/lib/database/models/event.model';
+import '@/lib/database/models/user.model';
 import Stripe from 'stripe';
 import { CheckoutOrderParams, CreateOrderParams, GetOrdersByEventParams, GetOrdersByUserParams } from "@/types"
 import { redirect } from 'next/navigation';

@@ -104,7 +104,7 @@
 
 
 'use server'
-
+import '@/lib/database/models/user.model';
 import { revalidatePath } from 'next/cache'
 import { connectToDatabase } from '@/lib/database'
 import User from '@/lib/database/models/user.model'

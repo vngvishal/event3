@@ -75,7 +75,7 @@
 
 // export default User
 
-
+import '@/lib/database/models/event.model';
 import '@/lib/database/models/user.model';
 import { Schema, model, models, Document, Types } from 'mongoose';
 

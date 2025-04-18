@@ -1,5 +1,6 @@
 // app/api/tickets/[orderId]/route.ts
 import '@/lib/database/models/event.model';
+import '@/lib/database/models/user.model';
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/database';
 import Order from '@/lib/database/models/order.model';

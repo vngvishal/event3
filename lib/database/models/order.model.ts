@@ -50,7 +50,7 @@
 // const Order = models.Order || model('Order', OrderSchema)
 
 // export default Order
-
+import '@/lib/database/models/user.model';
 import '@/lib/database/models/event.model';
 import { Schema, model, models, Document } from 'mongoose';
 

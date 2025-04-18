@@ -581,7 +581,7 @@
 
 // export default ProfilePage;
 
-
+import '@/lib/database/models/user.model';
 import Collection from '@/components/shared/Collection';
 import DownloadTicketButton from '@/components/shared/DownloadTicketButton';
 import { Button } from '@/components/ui/button';

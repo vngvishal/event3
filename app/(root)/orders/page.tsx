@@ -70,7 +70,7 @@
 // }
 
 // export default Orders
-
+import '@/lib/database/models/user.model';
 import '@/lib/database/models/event.model';
 import Search from '@/components/shared/Search'
 import { getOrdersByEvent } from '@/lib/actions/order.actions'
