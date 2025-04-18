@@ -76,7 +76,7 @@
 // export default User
 
 
-
+import '@/lib/database/models/user.model';
 import { Schema, model, models, Document, Types } from 'mongoose';
 
 // Interface for User Document
