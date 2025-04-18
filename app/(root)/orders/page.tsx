@@ -71,7 +71,7 @@
 
 // export default Orders
 
-
+import '@/lib/database/models/event.model';
 import Search from '@/components/shared/Search'
 import { getOrdersByEvent } from '@/lib/actions/order.actions'
 import { formatDateTime } from '@/lib/utils'

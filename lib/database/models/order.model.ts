@@ -51,7 +51,7 @@
 
 // export default Order
 
-
+import '@/lib/database/models/event.model';
 import { Schema, model, models, Document } from 'mongoose';
 
 export interface IOrder extends Document {
