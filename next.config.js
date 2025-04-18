@@ -6,10 +6,24 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'utfs.io',
-        port: ''
-      }
-    ]
-  }
-}
+        port: '',
+      },
+    ],
+  },
+  webpack(config, { isServer }) {
+    // Handle font files (AFM and PFB)
+    config.module.rules.push({
+      test: /\.(afm|pfb)$/,
+      use: {
+        loader: 'file-loader',
+        options: {
+          name: 'static/fonts/[name].[ext]',  // Copies fonts to /static/fonts/
+        },
+      },
+    });
 
-module.exports = nextConfig
+    return config;
+  },
+};
+
+module.exports = nextConfig;

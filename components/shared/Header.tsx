@@ -89,6 +89,118 @@
 // export default Header;
 
 
+// "use client";
+
+// import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
+// import Link from "next/link";
+// import { Button } from "../ui/button";
+// import NavItems from "./NavItems";
+// import MobileNav from "./MobileNav";
+
+// const Header = () => {
+//   const { user } = useUser();
+
+//   // Check for admin role from Clerk custom claim (you can adjust this path based on your JWT template)
+//   const isAdmin = user?.publicMetadata?.role === "admin";
+
+//   return (
+//     <header className="w-full border-b">
+//       <div className="wrapper flex items-center justify-between">
+//         {/* Placeholder for logo spacing */}
+//         <div className="w-36" />
+
+//         <SignedIn>
+//           <nav className="md:flex-between hidden w-full max-w-xl gap-6">
+//             <NavItems />
+
+//             {isAdmin && (
+//               <>
+//                 <Link href="/orders" className="text-sm font-medium hover:text-primary">
+//                   Orders
+//                 </Link>
+//                 <Link href="/events/create" className="text-sm font-medium hover:text-primary">
+//                   Create Event
+//                 </Link>
+//               </>
+//             )}
+//           </nav>
+//         </SignedIn>
+
+//         <div className="flex w-32 justify-end gap-3">
+//           <SignedIn>
+//             <UserButton afterSignOutUrl="/" />
+//             <MobileNav />
+//           </SignedIn>
+//           <SignedOut>
+//             <Button asChild className="rounded-full" size="lg">
+//               <Link href="/sign-in">Login</Link>
+//             </Button>
+//           </SignedOut>
+//         </div>
+//       </div>
+//     </header>
+//   );
+// };
+
+// export default Header;
+
+
+// "use client";
+
+// import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
+// import Link from "next/link";
+// import { Button } from "../ui/button";
+// import NavItems from "./NavItems";
+// import MobileNav from "./MobileNav";
+
+// const Header = () => {
+//   const { user } = useUser();
+
+//   // Check for admin role from Clerk custom claim (you can adjust this path based on your JWT template)
+//   const isAdmin = user?.publicMetadata?.role === "admin";
+
+//   return (
+//     <header className="w-full border-b">
+//       <div className="wrapper flex items-center justify-between">
+//         {/* Placeholder for logo spacing */}
+//         <div className="w-36" />
+
+//         <SignedIn>
+//           <nav className="md:flex-between hidden w-full max-w-xl gap-6">
+//             <NavItems />
+
+//             {isAdmin && (
+//               <>
+//                 <Link href="/orders" className="text-sm font-medium hover:text-primary">
+//                   Orders
+//                 </Link>
+//                 <Link href="/events/create" className="text-sm font-medium hover:text-primary">
+//                   Create Event
+//                 </Link>
+//               </>
+//             )}
+//           </nav>
+//         </SignedIn>
+
+//         <div className="flex w-32 justify-end gap-3">
+//           <SignedIn>
+//             <UserButton afterSignOutUrl="/" />
+//             <MobileNav isAdmin={isAdmin} /> {/* Pass isAdmin prop here */}
+//           </SignedIn>
+//           <SignedOut>
+//             <Button asChild className="rounded-full" size="lg">
+//               <Link href="/sign-in">Login</Link>
+//             </Button>
+//           </SignedOut>
+//         </div>
+//       </div>
+//     </header>
+//   );
+// };
+
+// export default Header;
+
+
 "use client";
 
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
@@ -100,8 +212,12 @@ import MobileNav from "./MobileNav";
 const Header = () => {
   const { user } = useUser();
 
-  // Check for admin role from Clerk custom claim (you can adjust this path based on your JWT template)
+  // Check for admin role from Clerk custom claim
   const isAdmin = user?.publicMetadata?.role === "admin";
+
+  // Define consistent link styles
+  const navLinkStyles =
+    "text-base font-semibold px-3 py-1 rounded-md hover:text-primary transition-colors duration-200";
 
   return (
     <header className="w-full border-b">
@@ -115,10 +231,16 @@ const Header = () => {
 
             {isAdmin && (
               <>
-                <Link href="/orders" className="text-sm font-medium hover:text-primary">
+                <Link
+                  href="/orders"
+                  className={navLinkStyles} // Applying the same style
+                >
                   Orders
                 </Link>
-                <Link href="/events/create" className="text-sm font-medium hover:text-primary">
+                <Link
+                  href="/events/create"
+                  className={navLinkStyles} // Applying the same style
+                >
                   Create Event
                 </Link>
               </>
@@ -129,7 +251,7 @@ const Header = () => {
         <div className="flex w-32 justify-end gap-3">
           <SignedIn>
             <UserButton afterSignOutUrl="/" />
-            <MobileNav />
+            <MobileNav isAdmin={isAdmin} /> {/* Pass isAdmin prop here */}
           </SignedIn>
           <SignedOut>
             <Button asChild className="rounded-full" size="lg">
@@ -143,5 +265,3 @@ const Header = () => {
 };
 
 export default Header;
-
-

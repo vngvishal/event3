@@ -8,7 +8,7 @@ export const headerLinks = [
   //   route: '/events/create',
   // },
   {
-    label: 'My Profile',
+    label: 'My Tickets',
     route: '/profile',
   },
 ]
@@ -24,4 +24,8 @@ export const eventDefaultValues = {
   price: '',
   isFree: false,
   url: '',
+  
 }
+
+
+

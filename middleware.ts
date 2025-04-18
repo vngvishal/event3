@@ -14,7 +14,8 @@ export default authMiddleware({
     '/api/webhook/clerk',
     '/api/webhook/stripe',
     '/api/uploadthing',
-    '/api/manual-update'
+    '/api/manual-update',
+    
   ]
 });
  
