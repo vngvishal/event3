@@ -117,18 +117,25 @@ import { IUserDocument } from '@/lib/database/models/user.model' // Assuming Use
 // Create user action
 export async function createUser(user: CreateUserParams) {
   try {
-    await connectToDatabase()
+    await connectToDatabase();
 
     // Check if user already exists
-    const existingUser = await User.findOne({ clerkId: user.clerkId }).lean<IUserDocument>()
-    if (existingUser) return existingUser
+    const existingUser = await User.findOne({ clerkId: user.clerkId }).lean<IUserDocument>();
+    if (existingUser) {
+      console.log('👤 User already exists:', existingUser);
+      return existingUser;
+    }
 
-    // Create new user in MongoDB
-    const newUser = await User.create(user)
-    return newUser.toObject() // Ensuring plain object return for ease of use
+    // Create new user
+    const newUser = await User.create(user);
+    const userObj = newUser.toObject();
+
+    console.log('✅ New MongoDB user created:', userObj._id);
+    return userObj;
   } catch (error) {
-    console.error('Error creating user:', error)
-    handleError(error)
+    console.error('❌ Error creating user:', error);
+    handleError(error);
+    return null;
   }
 }
 

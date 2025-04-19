@@ -493,35 +493,37 @@ export async function POST(req: Request) {
 
   const { type, data } = evt;
 
-  // Handle user creation
   if (type === 'user.created') {
-    const mongoUser = await createUser({
-      clerkId: data.id,
-      email: data.email_addresses[0]?.email_address,
-      username: `${data.username || data.first_name}${data.last_name}`.toLowerCase(),
-      firstName: data.first_name,
-      lastName: data.last_name,
-      photo: data.image_url,
-    });
-
-    if (mongoUser) {
-      try {
-        // Use updateUser, not updateUserMetadata
+    try {
+      const fallbackUsername = data.email_addresses[0]?.email_address?.split('@')[0] || 'user';
+  
+      const mongoUser = await createUser({
+        clerkId: data.id,
+        email: data.email_addresses[0]?.email_address,
+        username: (data.username || `${data.first_name || ''}${data.last_name || ''}` || fallbackUsername).toLowerCase(),
+        firstName: data.first_name || '',
+        lastName: data.last_name || '',
+        photo: data.image_url,
+      });
+  
+      if (mongoUser && mongoUser._id) {
         await clerkClient.users.updateUser(data.id, {
           publicMetadata: {
             userId: mongoUser._id.toString(),
-            role: 'user', // optional: default role
+            role: 'user',
           },
         });
-
+  
         const updatedUser = await clerkClient.users.getUser(data.id);
-        console.log(`✅ Clerk publicMetadata set:`, updatedUser.publicMetadata);
-      } catch (err) {
-        console.error('❌ Failed to update Clerk publicMetadata:', err);
+        console.log('✅ Clerk publicMetadata set:', updatedUser.publicMetadata);
+      } else {
+        console.error('❌ Mongo user creation failed or _id missing:', mongoUser);
       }
+    } catch (err) {
+      console.error('❌ Error in user.created handling:', err);
     }
   }
-
+  
   // Handle user updates
   if (type === 'user.updated') {
     await updateUser(data.id, {
