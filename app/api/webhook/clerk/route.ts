@@ -460,11 +460,207 @@
 // }
 
 
+// import { NextResponse } from 'next/server';
+// import { Webhook } from 'svix';
+// import { headers } from 'next/headers';
+// import { clerkClient } from '@clerk/nextjs';
+
+// import { createUser, updateUser, deleteUser } from '@/lib/actions/user.actions';
+
+// export async function POST(req: Request) {
+//   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
+
+//   if (!WEBHOOK_SECRET) {
+//     return NextResponse.json({ error: 'Missing webhook secret' }, { status: 400 });
+//   }
+
+//   const payload = await req.text();
+//   const headerPayload = headers();
+
+//   const wh = new Webhook(WEBHOOK_SECRET);
+//   let evt: any;
+
+//   try {
+//     evt = wh.verify(payload, {
+//       'svix-id': headerPayload.get('svix-id')!,
+//       'svix-timestamp': headerPayload.get('svix-timestamp')!,
+//       'svix-signature': headerPayload.get('svix-signature')!,
+//     });
+//   } catch (err) {
+//     console.error('❌ Webhook verification failed:', err);
+//     return NextResponse.json({ error: 'Invalid webhook signature' }, { status: 400 });
+//   }
+
+//   const { type, data } = evt;
+
+//   if (type === 'user.created') {
+//     try {
+//       const fallbackUsername = data.email_addresses[0]?.email_address?.split('@')[0] || 'user';
+  
+//       const mongoUser = await createUser({
+//         clerkId: data.id,
+//         email: data.email_addresses[0]?.email_address,
+//         username: (data.username || `${data.first_name || ''}${data.last_name || ''}` || fallbackUsername).toLowerCase(),
+//         firstName: data.first_name || '',
+//         lastName: data.last_name || '',
+//         photo: data.image_url,
+//       });
+  
+//       if (mongoUser && mongoUser._id) {
+//         await clerkClient.users.updateUser(data.id, {
+//           publicMetadata: {
+//             userId: mongoUser._id.toString(),
+//             role: 'user',
+//           },
+//         });
+  
+//         const updatedUser = await clerkClient.users.getUser(data.id);
+//         console.log('✅ Clerk publicMetadata set:', updatedUser.publicMetadata);
+//       } else {
+//         console.error('❌ Mongo user creation failed or _id missing:', mongoUser);
+//       }
+//     } catch (err) {
+//       console.error('❌ Error in user.created handling:', err);
+//     }
+//   }
+  
+//   // Handle user updates
+//   if (type === 'user.updated') {
+//     await updateUser(data.id, {
+//       firstName: data.first_name,
+//       lastName: data.last_name,
+//       photo: data.image_url,
+//       username: data.username || `${data.first_name}${data.last_name}`.toLowerCase(),
+//     });
+//   }
+
+//   // Handle user deletion
+//   if (type === 'user.deleted') {
+//     await deleteUser(data.id);
+//   }
+
+//   return new NextResponse('✅ Webhook handled', { status: 200 });
+// }
+
+
+
+// import { NextResponse } from 'next/server';
+// import { Webhook } from 'svix';
+// import { headers } from 'next/headers';
+// import { clerkClient } from '@clerk/nextjs';
+
+// import { createUser, updateUser, deleteUser } from '@/lib/actions/user.actions';
+
+// export async function POST(req: Request) {
+//   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
+
+//   if (!WEBHOOK_SECRET) {
+//     return NextResponse.json({ error: 'Missing webhook secret' }, { status: 400 });
+//   }
+
+//   const payload = await req.text();
+//   const headerPayload = headers();
+
+//   const wh = new Webhook(WEBHOOK_SECRET);
+//   let evt: any;
+
+//   try {
+//     evt = wh.verify(payload, {
+//       'svix-id': headerPayload.get('svix-id')!,
+//       'svix-timestamp': headerPayload.get('svix-timestamp')!,
+//       'svix-signature': headerPayload.get('svix-signature')!,
+//     });
+//   } catch (err) {
+//     console.error('❌ Webhook verification failed:', err);
+//     return NextResponse.json({ error: 'Invalid webhook signature' }, { status: 400 });
+//   }
+
+//   const { type, data } = evt;
+
+//   if (type === 'user.created') {
+//     try {
+//       const fallbackUsername =
+//         data.email_addresses[0]?.email_address?.split('@')[0] || 'user';
+
+//       const mongoUser = await createUser({
+//         clerkId: data.id,
+//         email: data.email_addresses[0]?.email_address,
+//         username:
+//           (data.username ||
+//             `${data.first_name || ''}${data.last_name || ''}` ||
+//             fallbackUsername
+//           ).toLowerCase(),
+//         firstName: data.first_name || '',
+//         lastName: data.last_name || '',
+//         photo: data.image_url,
+//       });
+
+//       if (mongoUser && mongoUser._id) {
+//         const MAX_RETRIES = 5;
+//         const RETRY_DELAY_MS = 2000;
+
+//         // Initial delay to give Clerk time to fully register the user
+//         await new Promise((res) => setTimeout(res, 2000));
+
+//         let retryCount = 0;
+//         let success = false;
+
+//         while (retryCount < MAX_RETRIES && !success) {
+//           try {
+//             // Confirm user exists in Clerk system
+//             await clerkClient.users.getUser(data.id);
+
+//             // Then attempt to set metadata
+//             await clerkClient.users.updateUserMetadata(data.id, {
+//               publicMetadata: {
+//                 userId: mongoUser._id.toString(),
+//                 role: 'user',
+//               },
+//             });
+
+//             const updatedUser = await clerkClient.users.getUser(data.id);
+//             console.log('✅ Clerk publicMetadata set:', updatedUser.publicMetadata);
+//             success = true;
+//           } catch (err: any) {
+//             console.error(`❌ Retry #${retryCount + 1} failed:`, err?.errors?.[0]?.message || err.message);
+//             retryCount++;
+//             await new Promise((res) => setTimeout(res, RETRY_DELAY_MS));
+//           }
+//         }
+
+//         if (!success) {
+//           console.error('❌ All retries failed to set Clerk metadata');
+//         }
+//       } else {
+//         console.error('❌ Mongo user creation failed or _id missing');
+//       }
+//     } catch (err) {
+//       console.error('❌ Error in user.created handling:', err);
+//     }
+//   }
+
+//   if (type === 'user.updated') {
+//     await updateUser(data.id, {
+//       firstName: data.first_name,
+//       lastName: data.last_name,
+//       photo: data.image_url,
+//       username:
+//         data.username || `${data.first_name || ''}${data.last_name || ''}`.toLowerCase(),
+//     });
+//   }
+
+//   if (type === 'user.deleted') {
+//     await deleteUser(data.id);
+//   }
+
+//   return new NextResponse('✅ Webhook handled', { status: 200 });
+// }
+
+
 import { NextResponse } from 'next/server';
 import { Webhook } from 'svix';
 import { headers } from 'next/headers';
 import { clerkClient } from '@clerk/nextjs';
-
 import { createUser, updateUser, deleteUser } from '@/lib/actions/user.actions';
 
 export async function POST(req: Request) {
@@ -495,46 +691,85 @@ export async function POST(req: Request) {
 
   if (type === 'user.created') {
     try {
-      const fallbackUsername = data.email_addresses[0]?.email_address?.split('@')[0] || 'user';
-  
+      const fallbackUsername =
+        data.email_addresses[0]?.email_address?.split('@')[0] || 'user';
+
       const mongoUser = await createUser({
         clerkId: data.id,
         email: data.email_addresses[0]?.email_address,
-        username: (data.username || `${data.first_name || ''}${data.last_name || ''}` || fallbackUsername).toLowerCase(),
+        username:
+          (data.username ||
+            `${data.first_name || ''}${data.last_name || ''}` ||
+            fallbackUsername
+          ).toLowerCase(),
         firstName: data.first_name || '',
         lastName: data.last_name || '',
         photo: data.image_url,
       });
-  
+
       if (mongoUser && mongoUser._id) {
-        await clerkClient.users.updateUser(data.id, {
-          publicMetadata: {
-            userId: mongoUser._id.toString(),
-            role: 'user',
-          },
-        });
-  
-        const updatedUser = await clerkClient.users.getUser(data.id);
-        console.log('✅ Clerk publicMetadata set:', updatedUser.publicMetadata);
+        const MAX_RETRIES = 5;
+        const RETRY_DELAY_MS = 2000;
+
+        // Step 1: Wait for Clerk to be ready (retry getUser)
+        let userExists = false;
+        for (let i = 0; i < MAX_RETRIES && !userExists; i++) {
+          try {
+            await clerkClient.users.getUser(data.id);
+            userExists = true;
+            break;
+          } catch {
+            console.warn(`⏳ Clerk user not ready (attempt ${i + 1})...`);
+            await new Promise((res) => setTimeout(res, RETRY_DELAY_MS));
+          }
+        }
+
+        // Step 2: If user exists, try to set metadata
+        if (userExists) {
+          let success = false;
+
+          for (let retry = 0; retry < MAX_RETRIES && !success; retry++) {
+            try {
+              await clerkClient.users.updateUserMetadata(data.id, {
+                publicMetadata: {
+                  userId: mongoUser._id.toString(),
+                  role: 'user',
+                },
+              });
+
+              const updatedUser = await clerkClient.users.getUser(data.id);
+              console.log('✅ Clerk publicMetadata set:', updatedUser.publicMetadata);
+              success = true;
+            } catch (err: any) {
+              console.error(`❌ Retry #${retry + 1} to set metadata failed:`, err?.errors?.[0]?.message || err.message);
+              await new Promise((res) => setTimeout(res, RETRY_DELAY_MS));
+            }
+          }
+
+          if (!success) {
+            console.error('❌ All retries failed to set Clerk metadata');
+          }
+        } else {
+          console.error('❌ Clerk user was never ready to receive metadata');
+        }
       } else {
-        console.error('❌ Mongo user creation failed or _id missing:', mongoUser);
+        console.error('❌ Mongo user creation failed or _id missing');
       }
     } catch (err) {
       console.error('❌ Error in user.created handling:', err);
     }
   }
-  
-  // Handle user updates
+
   if (type === 'user.updated') {
     await updateUser(data.id, {
       firstName: data.first_name,
       lastName: data.last_name,
       photo: data.image_url,
-      username: data.username || `${data.first_name}${data.last_name}`.toLowerCase(),
+      username:
+        data.username || `${data.first_name || ''}${data.last_name || ''}`.toLowerCase(),
     });
   }
 
-  // Handle user deletion
   if (type === 'user.deleted') {
     await deleteUser(data.id);
   }

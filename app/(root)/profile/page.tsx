@@ -579,7 +579,7 @@
 //   );
 // };
 
-// export default ProfilePage;
+// // export default ProfilePage;
 
 import '@/lib/database/models/user.model';
 import Collection from '@/components/shared/Collection';
@@ -659,56 +659,6 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
             </div>
           </section>
 
-          {/* <section className="wrapper my-8">
-            {orders?.data?.length ? (
-              <div className="grid grid-cols-1 gap-4">
-                {orders.data.map((order: IOrder) => (
-                  <div
-                    key={String(order._id)}
-                    className="border p-4 rounded-md shadow-md flex flex-col md:flex-row justify-between items-start"
-                  >
-
-
-
-<div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 p-4 border rounded-xl shadow-sm">
-  <div className="space-y-1">
-    <h4 className="font-bold text-lg">{order.event.title}</h4>
-    <p>
-      <strong>Stripe ID:</strong> {order.stripeId}
-    </p>
-    <p>
-      <strong>Total Paid:</strong> ₹{order.totalAmount}
-    </p>
-  </div>
-  <div className="md:ml-6">
-    <DownloadTicketButton orderId={String(order._id)} />
-  </div>
-</div>
-
-
-
-
-                  
-
-
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <Collection
-                data={[]}
-                emptyTitle="No event tickets purchased yet"
-                emptyStateSubtext="No worries - plenty of exciting events to explore!"
-                collectionType="My_Tickets"
-                limit={3}
-                page={ordersPage}
-                urlParamName="ordersPage"
-                totalPages={orders?.totalPages}
-              />
-            )}
-          </section> */}
-
-
 <section className="wrapper my-8">
   {orders?.data?.length ? (
     <div className="grid grid-cols-1 gap-4">
@@ -757,3 +707,8 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
 };
 
 export default ProfilePage;
+
+
+
+
+

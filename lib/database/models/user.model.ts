@@ -75,9 +75,9 @@
 
 // export default User
 
-import '@/lib/database/models/event.model';
-import '@/lib/database/models/user.model';
-import { Schema, model, models, Document, Types } from 'mongoose';
+// import '@/lib/database/models/event.model';
+// import '@/lib/database/models/user.model';
+import mongoose, { Schema, model, models, Document, Types } from 'mongoose';
 
 // Interface for User Document
 export interface IUserDocument extends Document {

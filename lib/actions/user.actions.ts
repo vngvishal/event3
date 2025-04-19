@@ -188,3 +188,16 @@ export async function deleteUser(clerkId: string) {
     handleError(error)
   }
 }
+// Get user by Clerk ID
+export async function getUserByClerkId(clerkId: string) {
+  try {
+    await connectToDatabase();
+
+    const user = await User.findOne({ clerkId }).lean<IUserDocument>();
+    return user || null;
+  } catch (error) {
+    console.error('❌ Error fetching user by Clerk ID:', error);
+    handleError(error);
+    return null;
+  }
+}

@@ -75,8 +75,8 @@
 
 // export default Event;
 
-import '@/lib/database/models/user.model';
-import { Schema, model, models, Document, Types } from 'mongoose';
+// import '@/lib/database/models/user.model';
+import mongoose,{ Schema, model, models, Document, Types } from 'mongoose';
 
 export interface IEvent extends Document {
   _id: string;
@@ -108,6 +108,6 @@ const EventSchema = new Schema<IEvent>({
     category: { type: Schema.Types.ObjectId, ref: 'Category' },
     organizer: { type: Schema.Types.ObjectId, ref: 'User' },
   });
-const Event = models.Event || model<IEvent>('Event', EventSchema);
+const Event = models?.Event || mongoose.model<IEvent>('Event', EventSchema);
 
 export default Event;
