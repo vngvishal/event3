@@ -202,7 +202,7 @@
 
 
 "use client";
-
+import Image from 'next/image'
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "../ui/button";
@@ -222,7 +222,13 @@ const Header = () => {
   return (
     <header className="w-full border-b">
       <div className="wrapper flex items-center justify-between">
-        {/* Placeholder for logo spacing */}
+      <Image
+    src="/assets/images/mlg.png"
+    alt="Logo"
+    width={60} // Example: 36 * 4 = 144px
+    height={25}
+    className="object-contain"
+  />
         <div className="w-36" />
 
         <SignedIn>

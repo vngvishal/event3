@@ -74,9 +74,9 @@ const MobileNav = ({ isAdmin }: MobileNavProps) => {
           />
         </SheetTrigger>
         <SheetContent className="flex flex-col gap-6 bg-white md:hidden p-4">
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-left">
             <Image
-              src="/assets/images/me_logo.png"
+              src="/assets/images/mlg.png"
               alt="logo"
               width={60}
               height={25}
